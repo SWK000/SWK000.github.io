@@ -5,22 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Macro Test</title>
 
-    <link rel="apple-touch-icon" sizes="57x57" href="https://SWK000.github.io/macrotest/favicons/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="https://SWK000.github.io/macrotest/favicons/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="https://SWK000.github.io/macrotest/favicons/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="https://SWK000.github.io/macrotest/favicons/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="https://SWK000.github.io/macrotest/favicons/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="https://SWK000.github.io/macrotest/favicons/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="https://SWK000.github.io/macrotest/favicons/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="https://SWK000.github.io/macrotest/favicons/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="https://SWK000.github.io/macrotest/favicons/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="https://SWK000.github.io/macrotest/favicons/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://SWK000.github.io/macrotest/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="https://SWK000.github.io/macrotest/favicons/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://SWK000.github.io/macrotest/favicons/favicon-16x16.png">
-    <link rel="manifest" href="https://SWK000.github.io/macrotest/favicons/manifest.json">
+    <link rel="apple-touch-icon" sizes="57x57" href="https://SWK000.github.io/macrotest/fvcn/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="https://SWK000.github.io/macrotest/fvcn/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://SWK000.github.io/macrotest/fvcn/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="https://SWK000.github.io/macrotest/fvcn/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://SWK000.github.io/macrotest/fvcn/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://SWK000.github.io/macrotest/fvcn/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://SWK000.github.io/macrotest/fvcn/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://SWK000.github.io/macrotest/fvcn/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://SWK000.github.io/macrotest/fvcn/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="https://SWK000.github.io/macrotest/fvcn/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://SWK000.github.io/macrotest/fvcn/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="https://SWK000.github.io/macrotest/fvcn/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://SWK000.github.io/macrotest/fvcn/favicon-16x16.png">
+    <link rel="manifest" href="https://SWK000.github.io/macrotest/fvcn/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="https://SWK000.github.io/macrotest/favicons/ms-icon-144x144.png">
+    <meta name="msapplication-TileImage" content="https://SWK000.github.io/macrotest/fvcn/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap">
@@ -177,6 +177,14 @@
             bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .version-license {
+            display: block;
+            font-size: 8px;
+            color: #ccc;
+            text-decoration: underline;
         }
     </style>
     
@@ -202,7 +210,10 @@
             </div>
             <p id="result"></p>
         </div>
-        <div class="footer">SWKing with GPT4</div>
+        <div class="footer">
+            SWKing with GPT4<br>
+            <span class="version-license">Version 3.1 - MIT License</span> <!-- Version and license -->
+        </div>
     </div>
     
     <script>
