@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Macro Test</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap">
     <style>
         body {
             font-family: 'Noto Sans', sans-serif;
@@ -42,7 +43,7 @@
             font-size: 24px;
             font-family: 'Noto Sans', sans-serif;
             cursor: pointer;
-            background-color: #007bff;
+            background-color: #0030F2;
             color: white;
             border: none;
             border-radius: 5px;
@@ -50,13 +51,18 @@
             transition: background-color 0.3s; /* Smooth transition */
         }
         button:hover {
-            background-color: #0056b3; /* Darker color on hover */
+            background-color: #73B3E3; /* Darker color on hover */
         }
         #numberDisplay {
-            font-size: 96px; /* Slightly larger number */
-            font-weight: 700;
+            font-size: 96px;
+            font-family: 'Noto Serif', serif;
+            font-weight: 500;
             margin: 20px;
-            color: #000000; /* Black text color for number */
+            color: #FFFFFF; /* White text color for number */
+            background-color: #E7722F; /* Orange background */
+            padding: 20px 40px;
+            border-radius: 10px;
+            display: inline-block;
             user-select: none; /* Prevent text selection */
         }
         input {
@@ -65,7 +71,7 @@
             font-family: 'Noto Sans', sans-serif;
             width: 150px;
             text-align: center;
-            border: 2px solid #007bff;
+            border: 2px solid #0030F2;
             border-radius: 5px;
             background-color: #FFFFFF; /* White background for input */
             color: #000000; /* Black text color for input */
@@ -75,7 +81,7 @@
             font-size: 24px;
             font-family: 'Noto Sans', sans-serif;
             cursor: pointer;
-            background-color: #28a745;
+            background-color: #0030F2;
             color: white;
             border: none;
             border-radius: 5px;
@@ -83,7 +89,7 @@
             transition: background-color 0.3s; /* Smooth transition */
         }
         #confirmButton:hover {
-            background-color: #218838; /* Darker color on hover */
+            background-color: #73B3E3; /* Darker color on hover */
         }
         #result {
             font-size: 24px;
@@ -95,7 +101,7 @@
             display: none;
         }
         h1 {
-            color: #FFD700; /* Dark yellow color */
+            color: #FFA600; /* Dark yellow color */
         }
         .toggle-container {
             margin: 20px;
@@ -138,10 +144,16 @@
             transition: .4s;
         }
         input:checked + .slider {
-            background-color: #007bff;
+            background-color: #0030F2;
         }
         input:checked + .slider:before {
             transform: translateX(26px);
+        }
+        .footer {
+            font-size: 12px;
+            color: #ccc;
+            position: absolute;
+            bottom: 10px;
         }
     </style>
 </head>
@@ -166,6 +178,7 @@
             </div>
             <p id="result"></p>
         </div>
+        <div class="footer">By SWK</div>
     </div>
     
     <script>
@@ -173,7 +186,7 @@
         let startTime = null;
         let allowDuplicates = true;
         let timerId = null;
-
+    
         function generateRandomNumber() {
             let numbers = [];
             let usedNumbers = new Set();
@@ -186,26 +199,27 @@
             }
             return numbers.join('');
         }
-
+    
         function startGame() {
             // Check toggle switch state
             allowDuplicates = document.getElementById('toggleSwitch').checked;
-
+    
             // Generate a random number based on the toggle state
             randomNumber = generateRandomNumber();
             startTime = new Date();
             document.getElementById('numberDisplay').textContent = randomNumber;
-
+    
             // Switch to game screen
             document.querySelector('.initial-screen').style.display = 'none';
             document.getElementById('game').style.display = 'flex';
-
+    
             // Focus on the input field and clear previous input
-            document.getElementById('guessInput').value = '';
-            document.getElementById('guessInput').focus();
+            const guessInput = document.getElementById('guessInput');
+            guessInput.value = '';
+            setTimeout(() => guessInput.focus(), 100);  // Slight delay to ensure focus
             document.getElementById('result').textContent = '';
             document.getElementById('inputContainer').classList.remove('hidden');
-
+    
             // Set a timer to automatically return to TRY button if no action is taken
             if (timerId) clearTimeout(timerId);
             timerId = setTimeout(() => {
@@ -215,33 +229,33 @@
                 document.getElementById('result').textContent = '';
             }, 60000); // 1 minute timeout
         }
-
+    
         function checkGuess() {
             const userInput = document.getElementById('guessInput').value;
             const elapsedTime = (new Date() - startTime) / 1000;
-
+    
             if (userInput === randomNumber) {
                 document.getElementById('result').textContent = `CORRECT! - ${elapsedTime.toFixed(2)} sec`;
             } else {
                 document.getElementById('result').textContent = 'FAIL!';
             }
-
-            // Hide input and confirm button, and show the try button
+    
+            // Hide input and confirm button, show try button and toggle switch without MACRO TEST text
             document.getElementById('inputContainer').classList.add('hidden');
             document.querySelector('.initial-screen').style.display = 'flex';
+            document.querySelector('h1').style.display = 'none';  // Hide MACRO TEST text
             document.getElementById('game').style.display = 'none';
-
+    
             // Clear timer since user has interacted
             if (timerId) clearTimeout(timerId);
         }
-
+    
         document.getElementById('tryButton').addEventListener('click', startGame);
-
         document.getElementById('confirmButton').addEventListener('click', checkGuess);
-
-        document.getElementById('guessInput').addEventListener('keypress', function(event) {
+    
+        // Allow Enter key to confirm guess without clicking the button
+        document.getElementById('guessInput').addEventListener('keyup', function(event) {
             if (event.key === 'Enter') {
-                // Trigger the confirm action on Enter key press
                 checkGuess();
             }
         });
