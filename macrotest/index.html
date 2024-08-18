@@ -40,7 +40,6 @@
         <div id="game" class="hidden">
             <p id="numberDisplay">Number: </p>
             <input type="text" id="guessInput" placeholder="Enter number" maxlength="4">
-            <button id="confirmButton">CONFIRM</button>
             <p id="result"></p>
         </div>
     </div>
@@ -55,9 +54,19 @@
             startTime = new Date();
             document.getElementById('numberDisplay').textContent = `Number: ${randomNumber.toString().padStart(4, '0')}`;
             document.getElementById('game').classList.remove('hidden');
+
+            // Focus on the input field
+            document.getElementById('guessInput').focus();
         });
 
-        document.getElementById('confirmButton').addEventListener('click', function() {
+        document.getElementById('guessInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                // Trigger the confirm action on Enter key press
+                checkGuess();
+            }
+        });
+
+        function checkGuess() {
             const userInput = document.getElementById('guessInput').value;
             const elapsedTime = (new Date() - startTime) / 1000;
             
@@ -70,7 +79,7 @@
             // Reset the game
             randomNumber = null;
             startTime = null;
-        });
+        }
     </script>
 </body>
 </html>
