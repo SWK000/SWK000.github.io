@@ -78,8 +78,8 @@
             font-family: 'Noto Serif', serif;
             font-weight: 500;
             margin: 20px;
-            color: #FFFFFF; /* White text color for number */
-            background-color: #E7722F; /* Orange background */
+            color: #000000; /* Black text color for number */
+            background-color: #EEEEEE; /* Default background */
             padding: 20px 40px;
             border-radius: 10px;
             display: inline-block;
@@ -207,80 +207,99 @@
     
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-        const tryButton = document.getElementById("tryButton");
-        const numberDisplay = document.getElementById("numberDisplay");
-        const guessInput = document.getElementById("guessInput");
-        const confirmButton = document.getElementById("confirmButton");
-        const resultDisplay = document.getElementById("result");
-        const gameScreen = document.getElementById("game");
-        const initialScreen = document.querySelector(".initial-screen");
-        const toggleSwitch = document.getElementById("toggleSwitch");
-        const inputContainer = document.getElementById("inputContainer");
-
-        let generatedNumber = "";
-        let startTime;
-
-        // Function to generate a random number
-        function generateRandomNumber(allowDuplicates) {
-            let digits = [];
-            while (digits.length < 4) {
-                let rand = Math.floor(Math.random() * 10).toString();
-                if (allowDuplicates || !digits.includes(rand)) {
-                    digits.push(rand);
+            const tryButton = document.getElementById("tryButton");
+            const numberDisplay = document.getElementById("numberDisplay");
+            const guessInput = document.getElementById("guessInput");
+            const confirmButton = document.getElementById("confirmButton");
+            const resultDisplay = document.getElementById("result");
+            const gameScreen = document.getElementById("game");
+            const initialScreen = document.querySelector(".initial-screen");
+            const toggleSwitch = document.getElementById("toggleSwitch");
+            const inputContainer = document.getElementById("inputContainer");
+    
+            let generatedNumber = "";
+            let startTime;
+    
+            // Array of color options
+            const colors = [
+                "#EE7722", // Orange
+                "#F0F000", // Yellow
+                "#11AA33", // Green
+                "#2233BB", // Blue
+                "#8833AA"  // Purple
+            ];
+    
+            // Function to generate a random number
+            function generateRandomNumber(allowDuplicates) {
+                let digits = [];
+                while (digits.length < 4) {
+                    let rand = Math.floor(Math.random() * 10).toString();
+                    if (allowDuplicates || !digits.includes(rand)) {
+                        digits.push(rand);
+                    }
                 }
+                return digits.join("");
             }
-            return digits.join("");
-        }
-
-        // Function to start the game
-        function startGame() {
-            initialScreen.style.display = "none";
-            gameScreen.style.display = "flex";
-            guessInput.value = "";
-            resultDisplay.textContent = "";
-            const allowDuplicates = toggleSwitch.checked;
-            generatedNumber = generateRandomNumber(allowDuplicates);
-            numberDisplay.textContent = generatedNumber;
-            inputContainer.style.display = "flex";
-            startTime = performance.now();
-            guessInput.focus(); // Automatically focus on the input field
-        }
-
-        // Function to check the user's guess
-        function checkGuess() {
-            const userGuess = guessInput.value;
-            const endTime = performance.now();
-            const timeTaken = ((endTime - startTime) / 1000).toFixed(3);
-
-            inputContainer.style.display = "none";
-            if (userGuess === generatedNumber) {
-                resultDisplay.textContent = `CORRECT - ${timeTaken} sec`;
-            } else {
-                resultDisplay.textContent = "FAIL";
+    
+            // Function to pick a random color
+            function getRandomColor() {
+                const randomIndex = Math.floor(Math.random() * colors.length);
+                return colors[randomIndex];
             }
-
-            setTimeout(resetGame, 1000); // Reset the game after 1 second
-        }
-
-        // Function to reset the game
-        function resetGame() {
-            gameScreen.style.display = "none";
-            initialScreen.style.display = "flex";
-        }
-
-        // Event listeners
-        tryButton.addEventListener("click", startGame);
-        confirmButton.addEventListener("click", checkGuess);
-        guessInput.addEventListener("keyup", function (event) {
-            if (event.key === "Enter") {
-                checkGuess();
+    
+            // Function to start the game
+            function startGame() {
+                initialScreen.style.display = "none";
+                gameScreen.style.display = "flex";
+                guessInput.value = "";
+                resultDisplay.textContent = "";
+                const allowDuplicates = toggleSwitch.checked;
+                generatedNumber = generateRandomNumber(allowDuplicates);
+                numberDisplay.textContent = generatedNumber;
+                
+                // Change the background color of numberDisplay
+                numberDisplay.style.backgroundColor = getRandomColor();
+                
+                inputContainer.style.display = "flex";
+                startTime = performance.now();
+                guessInput.focus(); // Automatically focus on the input field
             }
+    
+            // Function to check the user's guess
+            function checkGuess() {
+                const userGuess = guessInput.value;
+                const endTime = performance.now();
+                const timeTaken = ((endTime - startTime) / 1000).toFixed(3);
+    
+                inputContainer.style.display = "none";
+                if (userGuess === generatedNumber) {
+                    resultDisplay.textContent = `CORRECT - ${timeTaken} sec`;
+                } else {
+                    resultDisplay.textContent = "FAIL";
+                }
+    
+                setTimeout(resetGame, 1000); // Reset the game after 1 second
+            }
+    
+            // Function to reset the game
+            function resetGame() {
+                gameScreen.style.display = "none";
+                initialScreen.style.display = "flex";
+            }
+    
+            // Event listeners
+            tryButton.addEventListener("click", startGame);
+            confirmButton.addEventListener("click", checkGuess);
+            guessInput.addEventListener("keyup", function (event) {
+                if (event.key === "Enter") {
+                    checkGuess();
+                }
+            });
+    
+            // Disable text selection and copying
+            document.addEventListener("copy", (e) => e.preventDefault());
+            document.body.style.userSelect = "none";
         });
-
-        // Disable text selection and copying
-        document.addEventListener("copy", (e) => e.preventDefault());
-        document.body.style.userSelect = "none";
-    });
     </script>
 
 </body>
