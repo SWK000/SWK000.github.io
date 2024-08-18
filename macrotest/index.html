@@ -101,6 +101,7 @@
             display: none;
         }
         h1 {
+            font-size: 40px;
             color: #FFA600; /* Dark yellow color */
         }
         .toggle-container {
@@ -184,90 +185,82 @@
     </div>
     
     <script>
-        let randomNumber = null;
-        let startTime = null;
-        let allowDuplicates = true;
-        let timerId = null;
+        document.addEventListener("DOMContentLoaded", function () {
+        const tryButton = document.getElementById("tryButton");
+        const numberDisplay = document.getElementById("numberDisplay");
+        const guessInput = document.getElementById("guessInput");
+        const confirmButton = document.getElementById("confirmButton");
+        const resultDisplay = document.getElementById("result");
+        const gameScreen = document.getElementById("game");
+        const initialScreen = document.querySelector(".initial-screen");
+        const toggleSwitch = document.getElementById("toggleSwitch");
+        const inputContainer = document.getElementById("inputContainer");
 
-        function generateRandomNumber() {
-            let numbers = [];
-            let usedNumbers = new Set();
-            while (numbers.length < 4) {
-                let number = Math.floor(Math.random() * 10);
-                if (allowDuplicates || !usedNumbers.has(number)) {
-                    numbers.push(number);
-                    usedNumbers.add(number);
+        let generatedNumber = "";
+        let startTime;
+
+        // Function to generate a random number
+        function generateRandomNumber(allowDuplicates) {
+            let digits = [];
+            while (digits.length < 4) {
+                let rand = Math.floor(Math.random() * 10).toString();
+                if (allowDuplicates || !digits.includes(rand)) {
+                    digits.push(rand);
                 }
             }
-            return numbers.join('');
+            return digits.join("");
         }
 
+        // Function to start the game
         function startGame() {
-            // Check toggle switch state
-            allowDuplicates = document.getElementById('toggleSwitch').checked;
-
-            // Generate a random number based on the toggle state
-            randomNumber = generateRandomNumber();
-            startTime = new Date();
-            document.getElementById('numberDisplay').textContent = randomNumber;
-
-            // Switch to game screen
-            document.querySelector('.initial-screen').style.display = 'none';
-            document.getElementById('game').style.display = 'flex';
-
-            // Focus on the input field and clear previous input
-            const guessInput = document.getElementById('guessInput');
-            guessInput.value = '';
-            setTimeout(() => guessInput.focus(), 100);  // Slight delay to ensure focus
-            document.getElementById('result').textContent = '';
-            document.getElementById('inputContainer').classList.remove('hidden');
-
-            // Set a timer to automatically return to TRY button if no action is taken
-            if (timerId) clearTimeout(timerId);
-            timerId = setTimeout(() => {
-                resetToTryScreen();
-            }, 60000); // 1 minute timeout
+            initialScreen.style.display = "none";
+            gameScreen.style.display = "flex";
+            guessInput.value = "";
+            resultDisplay.textContent = "";
+            const allowDuplicates = toggleSwitch.checked;
+            generatedNumber = generateRandomNumber(allowDuplicates);
+            numberDisplay.textContent = generatedNumber;
+            inputContainer.style.display = "flex";
+            startTime = performance.now();
+            guessInput.focus(); // Automatically focus on the input field
         }
 
+        // Function to check the user's guess
         function checkGuess() {
-            const userInput = document.getElementById('guessInput').value;
-            const elapsedTime = (new Date() - startTime) / 1000;
+            const userGuess = guessInput.value;
+            const endTime = performance.now();
+            const timeTaken = ((endTime - startTime) / 1000).toFixed(3);
 
-            if (userInput === randomNumber) {
-                document.getElementById('result').textContent = `CORRECT! - ${elapsedTime.toFixed(2)} sec`;
+            inputContainer.style.display = "none";
+            if (userGuess === generatedNumber) {
+                resultDisplay.textContent = `CORRECT - ${timeTaken} sec`;
             } else {
-                document.getElementById('result').textContent = 'FAIL!';
+                resultDisplay.textContent = "FAIL";
             }
 
-            // Hide input and confirm button
-            document.getElementById('inputContainer').classList.add('hidden');
-            
-            // Show TRY button
-            document.getElementById('tryButton').style.display = 'block';
-
-            // Keep the number and result displayed
-            document.getElementById('numberDisplay').style.display = 'block';
-            document.getElementById('result').style.display = 'block';
-
-            // Clear timer since user has interacted
-            if (timerId) clearTimeout(timerId);
+            setTimeout(resetGame, 1000); // Reset the game after 1 second
         }
 
-        function resetToTryScreen() {
-            document.getElementById('inputContainer').classList.add('hidden');
-            document.querySelector('.initial-screen').style.display = 'flex';
-            document.getElementById('game').style.display = 'flex';  // Keep the number and result visible
+        // Function to reset the game
+        function resetGame() {
+            gameScreen.style.display = "none";
+            initialScreen.style.display = "flex";
         }
 
-        document.getElementById('tryButton').addEventListener('click', startGame);
-        document.getElementById('confirmButton').addEventListener('click', checkGuess);
-
-        // Allow Enter key to confirm guess without clicking the button
-        document.getElementById('guessInput').addEventListener('keyup', function(event) {
-            if (event.key === 'Enter') {
+        // Event listeners
+        tryButton.addEventListener("click", startGame);
+        confirmButton.addEventListener("click", checkGuess);
+        guessInput.addEventListener("keyup", function (event) {
+            if (event.key === "Enter") {
                 checkGuess();
             }
         });
+
+        // Disable text selection and copying
+        document.addEventListener("copy", (e) => e.preventDefault());
+        document.body.style.userSelect = "none";
+    });
     </script>
+
 </body>
 </html>
