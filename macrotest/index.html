@@ -14,7 +14,7 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            background-color: #FFFFFF; /* White background */
             overflow: hidden;
         }
         .container {
@@ -23,19 +23,19 @@
             width: 100%;
             height: 100%;
         }
-        .initial-screen {
+        .initial-screen, .game-screen {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100%;
+            width: 100%;
+        }
+        .initial-screen {
+            display: flex;
         }
         .game-screen {
             display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
         }
         button {
             padding: 15px 30px;
@@ -47,23 +47,101 @@
             border: none;
             border-radius: 5px;
             margin: 20px;
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+        button:hover {
+            background-color: #0056b3; /* Darker color on hover */
         }
         #numberDisplay {
-            font-size: 48px;
+            font-size: 96px; /* Slightly larger number */
+            font-weight: 700;
             margin: 20px;
+            color: #000000; /* Black text color for number */
+            user-select: none; /* Prevent text selection */
         }
         input {
             padding: 15px;
             font-size: 24px;
             font-family: 'Noto Sans', sans-serif;
-            width: 200px;
+            width: 150px;
             text-align: center;
             border: 2px solid #007bff;
             border-radius: 5px;
+            background-color: #FFFFFF; /* White background for input */
+            color: #000000; /* Black text color for input */
+        }
+        #confirmButton {
+            padding: 15px 20px;
+            font-size: 24px;
+            font-family: 'Noto Sans', sans-serif;
+            cursor: pointer;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-left: 10px;
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+        #confirmButton:hover {
+            background-color: #218838; /* Darker color on hover */
         }
         #result {
             font-size: 24px;
             margin-top: 20px;
+            color: #000000; /* Black text color for result */
+            user-select: none; /* Prevent text selection */
+        }
+        .hidden {
+            display: none;
+        }
+        h1 {
+            color: #FFD700; /* Dark yellow color */
+        }
+        .toggle-container {
+            margin: 20px;
+        }
+        .toggle-container label {
+            font-size: 20px;
+            color: #000000; /* Black text color for label */
+        }
+        .toggle-switch {
+            display: inline-block;
+            position: relative;
+            width: 60px;
+            height: 34px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            border-radius: 50%;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+        input:checked + .slider {
+            background-color: #007bff;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
         }
     </style>
 </head>
@@ -72,10 +150,20 @@
         <div class="initial-screen">
             <h1>MACRO TEST</h1>
             <button id="tryButton">TRY</button>
+            <div class="toggle-container" id="toggleContainer">
+                <label for="toggleSwitch">Duplicate Numbers:</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggleSwitch" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
         </div>
         <div class="game-screen" id="game">
-            <p id="numberDisplay">Number: </p>
-            <input type="text" id="guessInput" placeholder="Enter number" maxlength="4">
+            <p id="numberDisplay"></p>
+            <div id="inputContainer">
+                <input type="text" id="guessInput" placeholder="Enter number" maxlength="4">
+                <button id="confirmButton">CONFIRM</button>
+            </div>
             <p id="result"></p>
         </div>
     </div>
@@ -83,20 +171,73 @@
     <script>
         let randomNumber = null;
         let startTime = null;
+        let allowDuplicates = true;
+        let timerId = null;
 
-        document.getElementById('tryButton').addEventListener('click', function() {
-            // Generate a random number between 0000 and 9999
-            randomNumber = Math.floor(Math.random() * 10000);
+        function generateRandomNumber() {
+            let numbers = [];
+            let usedNumbers = new Set();
+            while (numbers.length < 4) {
+                let number = Math.floor(Math.random() * 10);
+                if (allowDuplicates || !usedNumbers.has(number)) {
+                    numbers.push(number);
+                    usedNumbers.add(number);
+                }
+            }
+            return numbers.join('');
+        }
+
+        function startGame() {
+            // Check toggle switch state
+            allowDuplicates = document.getElementById('toggleSwitch').checked;
+
+            // Generate a random number based on the toggle state
+            randomNumber = generateRandomNumber();
             startTime = new Date();
-            document.getElementById('numberDisplay').textContent = `Number: ${randomNumber.toString().padStart(4, '0')}`;
-            
+            document.getElementById('numberDisplay').textContent = randomNumber;
+
             // Switch to game screen
             document.querySelector('.initial-screen').style.display = 'none';
             document.getElementById('game').style.display = 'flex';
 
-            // Focus on the input field
+            // Focus on the input field and clear previous input
+            document.getElementById('guessInput').value = '';
             document.getElementById('guessInput').focus();
-        });
+            document.getElementById('result').textContent = '';
+            document.getElementById('inputContainer').classList.remove('hidden');
+
+            // Set a timer to automatically return to TRY button if no action is taken
+            if (timerId) clearTimeout(timerId);
+            timerId = setTimeout(() => {
+                document.getElementById('inputContainer').classList.add('hidden');
+                document.querySelector('.initial-screen').style.display = 'flex';
+                document.getElementById('game').style.display = 'none';
+                document.getElementById('result').textContent = '';
+            }, 60000); // 1 minute timeout
+        }
+
+        function checkGuess() {
+            const userInput = document.getElementById('guessInput').value;
+            const elapsedTime = (new Date() - startTime) / 1000;
+
+            if (userInput === randomNumber) {
+                document.getElementById('result').textContent = `CORRECT! - ${elapsedTime.toFixed(2)} sec`;
+            } else {
+                document.getElementById('result').textContent = 'FAIL!';
+            }
+
+            // Hide input and confirm button, and show the try button
+            document.getElementById('inputContainer').classList.add('hidden');
+            document.querySelector('.initial-screen').style.display = 'flex';
+            document.getElementById('game').style.display = 'none';
+
+            // Clear timer since user has interacted
+            if (timerId) clearTimeout(timerId);
+        }
+
+        document.getElementById('tryButton').addEventListener('click', startGame);
+
+        document.getElementById('confirmButton').addEventListener('click', checkGuess);
 
         document.getElementById('guessInput').addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
@@ -104,27 +245,6 @@
                 checkGuess();
             }
         });
-
-        function checkGuess() {
-            const userInput = document.getElementById('guessInput').value;
-            const elapsedTime = (new Date() - startTime) / 1000;
-            
-            if (userInput === randomNumber.toString().padStart(4, '0')) {
-                document.getElementById('result').textContent = `CORRECT! - ${elapsedTime.toFixed(2)} sec`;
-            } else {
-                document.getElementById('result').textContent = 'FAIL!';
-            }
-            
-            // Reset the game
-            randomNumber = null;
-            startTime = null;
-            
-            // Switch back to initial screen
-            setTimeout(() => {
-                document.getElementById('game').style.display = 'none';
-                document.querySelector('.initial-screen').style.display = 'flex';
-            }, 2000); // Show result for 2 seconds before going back
-        }
     </script>
 </body>
 </html>
