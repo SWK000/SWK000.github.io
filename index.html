@@ -1,1 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SWKing - HOME</title>
 
+    <!-- 파비콘 설정 -->
+    <link rel="apple-touch-icon" sizes="57x57" href="https://SWK000.github.io/fvcn/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="https://SWK000.github.io/fvcn/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="https://SWK000.github.io/fvcn/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="https://SWK000.github.io/fvcn/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="https://SWK000.github.io/fvcn/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://SWK000.github.io/fvcn/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="https://SWK000.github.io/fvcn/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://SWK000.github.io/fvcn/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://SWK000.github.io/fvcn/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="https://SWK000.github.io/fvcn/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://SWK000.github.io/fvcn/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="https://SWK000.github.io/fvcn/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://SWK000.github.io/fvcn/favicon-16x16.png">
+    <link rel="manifest" href="https://SWK000.github.io/fvcn/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="https://SWK000.github.io/fvcn/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- 폰트 설정 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap">
+
+    <style>
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            text-align: center;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 36px;
+        }
+        .block {
+            padding: 15px;
+            width: 200px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-bottom: 20px; /* Add margin between blocks */
+        }
+        .block:hover {
+            transform: scale(1.05);
+        }
+        .block img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .block p {
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .footer {
+            font-size: 12px;
+            color: #ccc;
+            position: absolute;
+            bottom: 10px;
+            text-align: center;
+            width: 100%;
+        }
+        .version-license {
+            display: block;
+            font-size: 8px;
+            color: #ccc;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>HOME</h1>
+
+    <!-- 링크 블록 추가 시작 -->
+    <div class="block" onclick="window.open('https://swk000.github.io/', '_blank')">
+        <img src="https://swk000.github.io/macrotest/cn.png" alt="Macro Test Image">
+        <p>MACRO TEST</p>
+    </div>
+    <!-- 링크 블록 추가 끝 -->
+
+    <!-- 추가할 링크 블록 예제 -->
+    <!--
+    <div class="block" onclick="window.open('YOUR_LINK_HERE', '_blank')">
+        <img src="YOUR_IMAGE_SRC_HERE" alt="YOUR_IMAGE_ALT_TEXT_HERE">
+        <p>YOUR_TEXT_HERE</p>
+    </div>
+    -->
+    <!-- 위의 주석된 코드를 복사하여 새로운 링크 블록을 쉽게 추가할 수 있습니다. -->
+
+    <div class="footer">
+        SWKing with GPT4<br>
+        <span class="version-license">Version 1.0.0 - MIT License</span>
+    </div>
+</body>
+</html>
