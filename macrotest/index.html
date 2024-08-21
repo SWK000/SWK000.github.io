@@ -74,27 +74,31 @@
             background-color: #73B3E3; /* Darker color on hover */
         }
         #numberDisplay {
-            font-size: 96px;
+            font-size: 84px;
             font-family: 'Crimson Text', serif;
             font-weight: 600;
             margin: 20px;
             color: #000000; /* Black text color for number */
-            background-color: #EEEEEE; /* Default background */
-            padding: 20px 40px;
+            background-color: #ccc; /* Default background */
+            padding: 30px 60px;
             border-radius: 10px;
             display: inline-block;
             user-select: none; /* Prevent text selection */
         }
         #inputContainer {
             display: flex;
-            align-items: center; /* 세로 가운데 정렬 */
-    }
+            align-items: center;
+            justify-content: center; /* 수평 가운데 정렬 */
+            width: 100%; /* 부모 컨테이너의 전체 너비 사용 */
+            margin-top: 20px; /* 위쪽 여백 추가 */
+        }
         input {
             padding: 5px;
             font-size: 20px;
             font-family: 'Noto Sans', sans-serif;
             height: 30px;
-            width: 150px;
+            width: 160px;
+            margin-left: 20px;
             text-align: center;
             border: 2px solid #0030F2;
             border-radius: 5px;
@@ -218,7 +222,7 @@
         </div>
         <div class="footer">
             SWKing with GPT4<br>
-            <span class="version-license">Version 1.0.0 - MIT License</span> <!-- Version and license -->
+            <span class="version-license">Version 1.0.1 - MIT License</span> <!-- Version and license -->
         </div>
     </div>
     
